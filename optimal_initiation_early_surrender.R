@@ -1,4 +1,3 @@
-# optimal_initiation <- function(mu, decessi, r, fattoriSconto, V, A, payoff, funzioniBase, numFunzioniBase, parm_sim, penalita)
 optimal_initiation_early_surrender <- function(nsim, X, M, state_variables, F, basis_functions, n_basis_functions, N, d, tau, B, penalty)
 {
   # calculate contract value at time 0 that can be initiated optimally and early surrendered
@@ -12,7 +11,6 @@ optimal_initiation_early_surrender <- function(nsim, X, M, state_variables, F, b
   for (n in (Nbar - 1) : 0)
   {
     ind_surv <- which(tau > n)
-    # l_surv <- length(ind_surv)
 
     initiation_value <- F[n + 1, ind_surv]
 
