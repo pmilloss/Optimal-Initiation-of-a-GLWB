@@ -1,4 +1,3 @@
-# optimal_initiation <- function(mu, decessi, r, fattoriSconto, V, A, payoff, funzioniBase, numFunzioniBase, parm_sim, penalita)
 optimal_initiation_early_surrender <- function(nsim, X, M, state_variables, F, basis_functions, n_basis_functions, N, d, tau, B, penalty)
 {
   # calculate contract value at time 0 that can be initiated optimally and early surrendered
@@ -12,44 +11,18 @@ optimal_initiation_early_surrender <- function(nsim, X, M, state_variables, F, b
   for (n in (Nbar - 1) : 0)
   {
     ind_surv <- which(tau > n)
-    # l_surv <- length(ind_surv)
 
     initiation_value <- F[n + 1, ind_surv]
 
     continuation_value <- payoff_initiation_surrender[ind_surv] * B[n + 1, ind_surv] / B[cbind(pmin(lambda[ind_surv_j], pai[ind_surv_j]) + 1, ind_surv)]
     
-    # regression_matrix[j, ] <- basis_functions(c(X[n + 1, ind_surv_j], M[n + 1, ind_surv_j])) # AGGIUNGERE ALTRE VARIABILI DI 
-        
     state_variables<- cbind(X[n + 1, ind_surv], M[n + 1, ind_surv])
     
     regression_matrix <- t(apply(X = state_variables, MARGIN = 1, FUN = "basis_functions"))
-    # basis_functions(c(X[n + 1, ind_surv_j], M[n + 1, ind_surv_j])) # AGGIUNGERE ALTRE VARIABILI DI STATO
-    
-    # initiation_value <- continuation_value <- surrender_value <- c()
-    # regression_matrix <- matrix(nrow = l_surv, ncol = n_basis_functions)
-    
-    # initiation_value <- F[n + 1, ind_surv]
-    
-    # for(j in 1 : l_surv)
-    # {
-    #   ind_surv_j <- ind_surv[j]
-    #   
-    #   continuation_value[j] <- payoff_initiation_surrender[ind_surv_j] * B[n + 1, ind_surv_j] / B[pmin(lambda[ind_surv_j], pai[ind_surv_j]) + 1, ind_surv_j]
-    #   
-    #   regression_matrix[j, ] <- basis_functions(c(X[n + 1, ind_surv_j], M[n + 1, ind_surv_j])) # AGGIUNGERE ALTRE VARIABILI DI STATO
-    # }
-    
-    # continuation_value_LSMC <- as.numeric(fitted(lm(continuation_value ~ regression_matrix)))
-    # 
-    # initiation_value_LSMC <- as.numeric(fitted(lm(initiation_value ~ regression_matrix)))
     
     continuation_value_LSMC <- lm.fit(regression_matrix, continuation_value)$fitted.values
     
     initiation_value_LSMC <- lm.fit(regression_matrix, initiation_value)$fitted.values
-    
-    # continuation_value_LSMC <- lm.fitted(regression_matrix, continuation_value)
-    # 
-    # initiation_value_LSMC <- lm.fitted(regression_matrix, initiation_value)
     
     surrender_value <- X[n + 1, ind_surv] * (1 - penalty)
     
