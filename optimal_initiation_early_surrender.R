@@ -27,8 +27,8 @@ optimal_initiation_early_surrender <- function(nsim, X, M, state_var = NULL, F, 
   for (n in (Nbar - 1) : 0)
   {
     ind_surv <- which(tau > n)
-    # (indices of) survivors
-
+    # (indices of) survivors at n
+    
     init_value <- F[n + 1, ind_surv]
 
     cont_value <- payoff[ind_surv] * B[n + 1, ind_surv] / B[cbind(pmin(lambda[ind_surv], pai[ind_surv]) + 1, ind_surv)]
