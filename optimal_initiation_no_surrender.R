@@ -25,7 +25,7 @@ optimal_initiation_no_surrender <- function(nsim, X, M, state_var = NULL, F, bas
   for (n in (Nbar - 1) : 0)
   {
     ind_surv <- which(tau > n)
-    # (indices of) survivors
+    # (indices of) survivors at n
     
     init_value <- F[n + 1, ind_surv]
     
